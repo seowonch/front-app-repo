@@ -1,5 +1,5 @@
 
-name: Build Front
+name: Build Front test
 
 on:
   push:
