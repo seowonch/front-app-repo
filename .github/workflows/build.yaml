@@ -47,3 +47,35 @@ jobs:
           echo "::set-output name=image_tag::$IMAGE_TAG"
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+  update-argocd-metadata:
+    needs: build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: "charts"
+          #ssh-key: ${{ secrets.GITHUBACTION_KEY }}
+          #submodules: 'recursive'
+      - name: show charts
+        run:  |
+          ls -al
+          cat .charts/day1/charts/templates/values.yaml
+      - name: change values-dev.yaml
+        run: |
+          cat <<EOF > .charts/day1/charts/templates/dev-values.yaml
+          image:
+            tag: ${{ env.IMAGE_TAG }}
+          EOF
+      - name: git push
+        run: |
+          git config --global user.email "GitHub Actions Bot@github.com"
+          git config --global user.name "GitHub Actions Bot"
+          git add values-dev.yaml
+          git commit -m "change dockertag"
+          git pull origin charts
+          git push origin charts
