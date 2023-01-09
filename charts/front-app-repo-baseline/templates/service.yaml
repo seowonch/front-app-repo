@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "day1.fullname" . }}
+  name: {{ include "front-app-repo-baseline.fullname" . }}
   labels:
-    {{- include "day1.labels" . | nindent 4 }}
+    {{- include "front-app-repo-baseline.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "day1.selectorLabels" . | nindent 4 }}
+    {{- include "front-app-repo-baseline.selectorLabels" . | nindent 4 }}

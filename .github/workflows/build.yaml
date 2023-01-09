@@ -64,10 +64,10 @@ jobs:
       - name: show charts
         run:  |
           ls -al
-          cat .charts/day1/charts/templates/values.yaml
+          cat .charts/front-app-repo-baseline/charts/templates/values.yaml
       - name: change values-dev.yaml
         run: |
-          cat <<EOF > .charts/day1/charts/templates/dev-values.yaml
+          cat <<EOF > .charts/front-app-repo-baseline/charts/templates/values.yaml
           image:
             tag: ${{ env.IMAGE_TAG }}
           EOF
